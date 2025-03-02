@@ -9,7 +9,7 @@ public class PlayerControl : MonoBehaviour
     public float vert;
 
     // 관성비(1:x), 현재 입력 방향
-    private float inertia = 3f;
+    private float inertia = 7.5f;
     public Vector2 currDirection;
 
 
@@ -28,6 +28,15 @@ public class PlayerControl : MonoBehaviour
             (vert + prevDirection.y * inertia) / (1 + inertia));
     }
 
+    void StopMove()
+    {
+        hor = 0f;
+        vert = 0f;
+
+        currDirection = Vector2.zero;
+        body2D.linearVelocity = new Vector2(0,0);
+    }
+
     void Start()
     {
         body2D = GetComponent<Rigidbody2D>();
@@ -36,12 +45,16 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
-        if(manager.GetComponent<gameManagerScript>().current == gameManagerScript.mode.fall)
+        if (manager.GetComponent<GameManagerScript>().current == GameManagerScript.mode.fall)
         {
             // 입력받기
             DirectionInput(currDirection);
             // 움직이기
             body2D.linearVelocity = new Vector2(currDirection.x * playerSpeed, currDirection.y * playerSpeed);
+        }
+        else
+        {
+            StopMove();
         }
     }
 }
