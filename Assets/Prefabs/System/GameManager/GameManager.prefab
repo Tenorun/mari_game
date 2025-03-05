@@ -45,3 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   current: 0
+  pushLevel: 1
+  glideLevel: 1
+  resistanceLevel: 1
+  incomeLevel: 1
+  money: 0
+  fallRecord: 0

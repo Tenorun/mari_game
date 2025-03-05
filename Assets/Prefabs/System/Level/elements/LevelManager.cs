@@ -5,12 +5,28 @@ using UnityEngine.InputSystem.Controls;
 
 public class LevelManager : MonoBehaviour
 {
+
+    // 매니저, 밀기 표시기
     GameObject manager;
     GameObject indicator;
 
+    // 배경 이미지 오브젝트
     GameObject BgImage;
     GameObject statusPannel;
     GameObject upgradeMenu;
+
+    // 플레이어
+    GameObject player;
+
+
+    // 아이템 프리팹
+    public GameObject[] itemPrefabs;
+    // 아이템들의 부모 오브젝트
+    GameObject itemParent;
+
+    // 아이템 생성 초 측정
+    float spawnTime = 0f;
+    float obstacleSpawnRate;
 
     // 밀기 버튼을 누른 시간
     float pressTime = 0f;
@@ -39,6 +55,14 @@ public class LevelManager : MonoBehaviour
 
         upgradeMenu = GameObject.Find("Upgrade Menu");
         upgradeMenu.SetActive(false);
+
+        itemParent = GameObject.Find("Items");
+
+        player = GameObject.Find("Player");
+
+
+        // 마리 위치 초기화
+        player.transform.position = new Vector2(0, 3);
     }
     // Update is called once per frame
     void Update()
@@ -81,7 +105,7 @@ public class LevelManager : MonoBehaviour
                     indicator.SetActive(false);
 
                     // 낙하 계산
-                    floatHeight = 0.5f + inputPower * Mathf.Pow(manager.GetComponent<GameManagerScript>().pushLevel, 1.25f) * 10;
+                    floatHeight = 0.5f + inputPower * Mathf.Pow(manager.GetComponent<GameManagerScript>().pushLevel, 1.25f) * 15;
 
                     // 낙하 거리, 속도 배수 초기화
                     fallDistance = 0f;
@@ -102,8 +126,53 @@ public class LevelManager : MonoBehaviour
                 // 낙하 높이와, 공중에 떠있는 거리 표시 업데이트
                 statusPannel.GetComponent<StatusPannelScript>().UpdateFallAndFloatHeight(fallDistance, floatHeight);
 
+                // 장애물 생성
+                spawnTime += Time.deltaTime;
+
+                if (spawnTime >= 0.01)
+                {
+                    // 장애물 생성 확률 구하기
+                    // 1.5 * 1.1^(fallDistance/50) 확률 (10m 마다 확률 1.1배 증가)
+                    obstacleSpawnRate = 0.75f * Mathf.Pow(1.1f, fallDistance / 10);
+
+                    for (int i = Mathf.RoundToInt(spawnTime * 100); i > 0; i--)
+                    {
+                        // 장애물 생성
+                        if (Random.Range(0.0f, 100.0f) <= obstacleSpawnRate)
+                        {
+                            // 0 또는 1의 랜덤 값 선택
+                            int randomIndex = Random.Range(0, 2);
+
+                            // 장애물 위치 설정
+                            float randomX = Random.Range(-9f, 9f);
+                            Vector2 spawnPosition = new Vector2(randomX, -10f);
+
+                            // 장애물 생성 및 부모 설정
+                            GameObject newItem = Instantiate(itemPrefabs[randomIndex], spawnPosition, Quaternion.identity);
+                            newItem.transform.SetParent(itemParent.transform);
+                        }
+
+                        // 0.01초 마다 0.75% 확률로 버프템 생성
+                        if (Random.Range(0.0f, 100.0f) <= 0.75f)
+                        {
+                            int randomIndex = Random.Range(2, 4);
+
+                            // 버프템 위치 설정
+                            float randomX = Random.Range(-9f, 9f);
+                            Vector2 spawnPosition = new Vector2(randomX, -10f);
+
+                            // 장애물 생성 및 부모 설정
+                            GameObject newItem = Instantiate(itemPrefabs[randomIndex], spawnPosition, Quaternion.identity);
+                            newItem.transform.SetParent(itemParent.transform);
+                        }
+                    }
+                    // 스폰 타이머 초기화
+                    spawnTime = 0f;
+                }
+
+
                 // 계단에 떨어져 끝남
-                if(floatHeight <= 0)
+                if (floatHeight <= 0)
                 {
                     // 최고기록 돌파하면 업데이트
                     if (manager.GetComponent<GameManagerScript>().fallRecord < fallDistance)
@@ -124,6 +193,9 @@ public class LevelManager : MonoBehaviour
                 {
                     statusPannel.GetComponent<StatusPannelScript>().UpdateMoneyAndRecord();
                     manager.GetComponent<GameManagerScript>().current = GameManagerScript.mode.wait;
+
+                    // 마리 위치 초기화
+                    player.transform.position = new Vector2(0, 3);
                 }
                 break;
         }

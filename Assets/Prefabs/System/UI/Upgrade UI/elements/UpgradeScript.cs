@@ -52,7 +52,7 @@ public class UpgradeScript : MonoBehaviour
 
         // 레벨 표시, 가격, 가격 표시 업데이트
         btns[btnNum].levelText.text = $"Lv.{levelNum}";
-        btns[btnNum].price = Mathf.RoundToInt(Mathf.Pow(2.5f, levelNum) * 100);
+        btns[btnNum].price = Mathf.RoundToInt(Mathf.Pow(2.5f, levelNum) * 50);
         btns[btnNum].priceText.text = $"$ {btns[btnNum].price}";
 
         // 버튼 선택 여부 업데이트

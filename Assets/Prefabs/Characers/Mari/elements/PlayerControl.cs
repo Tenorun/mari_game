@@ -15,6 +15,9 @@ public class PlayerControl : MonoBehaviour
 
     private Rigidbody2D body2D;
     GameObject manager;
+    GameObject level;
+
+    int resistanceLevel;
 
     // 방향 입력
     void DirectionInput(Vector2 prevDirection)
@@ -34,13 +37,17 @@ public class PlayerControl : MonoBehaviour
         vert = 0f;
 
         currDirection = Vector2.zero;
-        body2D.linearVelocity = new Vector2(0,0);
+        body2D.linearVelocity = new Vector2(0, 0);
     }
 
     void Start()
     {
         body2D = GetComponent<Rigidbody2D>();
         manager = GameObject.FindWithTag("Manager");
+
+        level = GameObject.Find("Level");
+
+        resistanceLevel = manager.GetComponent<GameManagerScript>().resistanceLevel;
     }
 
     private void Update()
@@ -55,6 +62,45 @@ public class PlayerControl : MonoBehaviour
         else
         {
             StopMove();
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            int itemType = other.gameObject.GetComponent<ItemBehavior>().ItemVarientNum;
+
+            switch (itemType)
+            {
+                // 1: 감속
+                case 1:
+
+                    if (level.GetComponent<LevelManager>().travelSpeedMultiplier > 1)
+                    {
+                        level.GetComponent<LevelManager>().travelSpeedMultiplier = 1f;
+                    }
+                    else
+                    {
+                        level.GetComponent<LevelManager>().travelSpeedMultiplier -= 0.1f;
+                    }
+
+                    break;
+                // 2: 부유치 떨구기
+                case 2:
+                    level.GetComponent<LevelManager>().floatHeight *= 1 - (0.05f - (0.02f*resistanceLevel));
+                    break;
+                // 3: 가속
+                case 3:
+                    level.GetComponent<LevelManager>().travelSpeedMultiplier += 0.1f;
+                    break;
+                // 4: 부유치 올리기
+                case 4:
+                    level.GetComponent<LevelManager>().floatHeight *= 1.25f;
+                    break;
+                default:
+                    Debug.LogError($"itemType, {itemType}이 뭘 하는지 모르겠다 이양반아");
+                    break;
+            }
         }
     }
 }

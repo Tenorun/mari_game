@@ -49,6 +49,37 @@ MonoBehaviour:
   BgImages:
   - {fileID: 7177275307090856984}
   - {fileID: 6067021627903001936}
+--- !u!1 &2842563746330798775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8850806785970325266}
+  m_Layer: 0
+  m_Name: Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8850806785970325266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842563746330798775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7420712989800981030}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6067021627903001936
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +155,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -6188906093305827794, guid: cfc8e932a8f79f54e9f45e335ad89773, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -211,7 +242,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -6188906093305827794, guid: cfc8e932a8f79f54e9f45e335ad89773, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -254,6 +285,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5281397705904068457}
+  - {fileID: 8850806785970325266}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1162016016767831828
@@ -268,6 +300,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4590227af3e5b4e448382f1571a7dfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPrefabs:
+  - {fileID: 2909117354815167478, guid: 9c5127e6c9d49a4458e15845eb4d7985, type: 3}
+  - {fileID: 1342332293244801001, guid: b92f676f1334da14fb480163e6a41991, type: 3}
+  - {fileID: 2763367888345993211, guid: 1313bd3b2be5ff349b8789f85f46ccb4, type: 3}
+  - {fileID: 6323358203026779068, guid: 940f87599f5d8ee489f1079cfad2f607, type: 3}
   floatHeight: 0
   fallDistance: 0
   loopAmo: 0
